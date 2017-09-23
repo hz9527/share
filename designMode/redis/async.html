@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>订阅发布模式</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      function Observer (eventConf) {
+        if (!eventConf) {
+          this.eventConf = null
+        } else {
+          if (eventConf.constructor !== Array) {
+            console.error('eventConf is Array!')
+            return
+          } else if (eventConf.some(item => typeof item !== 'string')) {
+            console.error('items are String!')
+            return
+          }
+          this.eventConf = eventConf.slice()
+        }
+        this.events = {}
+        this._timer = null
+        this._loop = []
+      }
+      Observer.prototype._dealListener = function (name, fn, context, arg) {
+        var item = {
+          fn: fn || function () {},
+          context: context || null,
+          arg: arg || []
+        }
+        if (typeof item.fn !== 'function') {
+          item.fn = function () {}
+        }
+        if (item.arg.constructor !== Array) {
+          item.arg = [item.arg]
+        }
+        if (this.events[name]) {
+          this.events[name].push(item)
+        } else {
+          this.events[name] = [item]
+        }
+      }
+      Observer.prototype.addListener = function (name, fn, context, arg) {
+        if (this.eventConf) {
+          if (this.eventConf.some(item => item === name)) {
+            this._dealListener(name, fn, context, arg)
+          } else {
+            console.error('name is invaild')
+          }
+        } else {
+          this._dealListener(name, fn, context, arg)
+        }
+      }
+      Observer.prototype._triggerItem = function (name) {
+        this.events[name].forEach(item => {
+          item.fn.apply(item.context, item.arg) // 箭头函数 apply无效
+        })
+      }
+      Observer.prototype.trigger = function (name) {
+        if (typeof name === 'string') {
+          this.events[name] && this._loop.push(name)
+        } else if (!name) {
+          this._loop = this._loop.concat(Object.keys(this.events))
+        } else if (name.constructor === Array) {
+          this._loop = this._loop.concat(name)
+        }
+        if (!this._timer) {
+          setTimeout(() => {
+            this._loop.forEach(name => {
+              this._triggerItem(name)
+            })
+            this._timer = null
+            this._loop = []
+          }, 0)
+        }
+      }
+      Observer.prototype.removeListener = function (name, fn) {
+        if (this.events[name]) {
+          var i = this.events[name].findIndex(item => item.fn === fn)
+          if (i > -1) {
+            this.events[name].splice(i, 1)
+          }
+        }
+      }
+    </script>
+    <script type="text/javascript">
+      var obj = new Observer()
+      obj.addListener('click', () => {
+        console.log(1)
+      })
+      obj.addListener('dbclick', () => {
+        console.log(2)
+      })
+      setTimeout(() => {
+        console.log(4)
+      }, 0)
+      obj.trigger()
+      console.log(3)
+      setTimeout(() => {
+        console.log(5)
+      }, 0)
+    </script>
+  </body>
+</html>
