@@ -1,0 +1,22 @@
+{
+  "name": "learn_pwa",
+  "version": "1.0.0",
+  "description": "pwa",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "introduce": "node index.js introduce"
+  },
+  "keywords": [
+    "pwa"
+  ],
+  "author": "hz9527",
+  "license": "ISC",
+  "devDependencies": {
+    "chalk": "^2.3.0",
+    "express": "^4.16.2",
+    "opn": "^5.2.0"
+  }
+}
