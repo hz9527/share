@@ -63,8 +63,8 @@ self.addEventListener('activate', event => {
           }))
         })
         .then(() => {
-          console.log('clear unnecessary cache', 'success')
-          clients.claim()
+          console.log('clear unnecessary cache, but not exec clients.claim function', 'success')
+          // clients.claim()
         })
       })
   )

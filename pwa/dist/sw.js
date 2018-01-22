@@ -10,7 +10,6 @@ Object.keys(Config).forEach(key => {
     Config[key] += ' font-size: 12px; text-decoration:underline;'
   }
 })
-let log = console.log
 // 重写console，默认样式为info，具体参照Config
 console.log = (function () {
   let log = console.log
@@ -24,7 +23,7 @@ console.log = (function () {
   }
 })()
 
-console.log('update serviceWorker 1 times', 'tip')
+console.log('update serviceWorker 2 times', 'tip')
 
 const CacheName = 'test'
 const CacheList = ['./index.js', './index.html'] // install can`t add cross-domain file
@@ -51,6 +50,7 @@ self.addEventListener('install', event => {
 
 self.addEventListener('activate', event => {
   console.log('emit activate event')
+  clients.claim()
   event.waitUntil(
     caches.open(CacheName)
       .then(cache => {
@@ -64,8 +64,7 @@ self.addEventListener('activate', event => {
           }))
         })
         .then(() => {
-          console.log('clear unnecessary cache')
-          clients.claim()
+          console.log('clear unnecessary cache', 'success')
         })
       })
   )

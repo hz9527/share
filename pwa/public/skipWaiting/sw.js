@@ -42,8 +42,8 @@ self.addEventListener('install', event => {
         }))
       })
       .then(() => {
-        console.log('add all file to cache', 'success')
-        skipWaiting()
+        console.log('add all file to cache, but not exec skipWaiting function', 'success')
+        // skipWaiting()
       })
   )
 })

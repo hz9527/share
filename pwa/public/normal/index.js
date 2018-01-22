@@ -29,10 +29,14 @@ console.log('说明： sw文件打印log带下划线，index.js文件log不带�
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js')
     .then(register => {
+      let needReload = navigator.serviceWorker.controll !== null
       console.log('register serviceWorker successful', 'success')
       navigator.serviceWorker.addEventListener('controllerchange', e => {
         console.log('broswer receive controllerchange event')
-        location.reload()
+        if (needReload) {
+          alert(1)
+          location.reload()
+        }
       })
     })
 } else {

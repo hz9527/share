@@ -32,7 +32,7 @@ if ('serviceWorker' in navigator) {
       console.log('register serviceWorker successful', 'success')
       navigator.serviceWorker.addEventListener('controllerchange', e => {
         console.log('broswer receive controllerchange event')
-        location.reload()
+        // location.reload()
       })
     })
 } else {

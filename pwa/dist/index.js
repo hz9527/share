@@ -11,7 +11,6 @@ Object.keys(Config).forEach(key => {
   }
 })
 // 重写console，默认样式为info，具体参照Config
-let log = console.log
 console.log = (function () {
   let log = console.log
   return function () {
@@ -30,10 +29,14 @@ console.log('说明： sw文件打印log带下划线，index.js文件log不带�
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js')
     .then(register => {
+      let needReload = navigator.serviceWorker.controll !== null
       console.log('register serviceWorker successful', 'success')
       navigator.serviceWorker.addEventListener('controllerchange', e => {
         console.log('broswer receive controllerchange event')
-        location.reload()
+        // if (needReload) {
+        //   alert(1)
+        //   location.reload()
+        // }
       })
     })
 } else {
@@ -46,7 +49,7 @@ $('.update').onclick = (() => {
   return () => {
     if (!loading) {
       loading = true
-      $http('get', '/update')
+      $http('post', '/update')
         .then(res => {
           loading = false
           console.log(res, 'updated files', 'success')
