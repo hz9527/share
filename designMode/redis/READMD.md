@@ -119,10 +119,14 @@ doSomeElseThing()
 ### Vue中同步订阅与异步发布的原理
 ```javaScript
 data () {
-  value: 1
+  return {
+    value: 1,
+    value2: 2
+  }
 },
 computed: {
   myValue () {
+    console.log(this.value2)
     return this.value * 2
   }
 },
@@ -133,7 +137,7 @@ watch: {
 },
 methods: {
   click () {
-    this.value++
+    this.value2++
   }
 }
 ```
