@@ -29,14 +29,13 @@ console.log('说明： sw文件打印log带下划线，index.js文件log不带�
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js')
     .then(register => {
-      let needReload = navigator.serviceWorker.controll !== null
       console.log('register serviceWorker successful', 'success')
       navigator.serviceWorker.addEventListener('controllerchange', e => {
         console.log('broswer receive controllerchange event')
-        // if (needReload) {
-        //   alert(1)
-        //   location.reload()
-        // }
+        location.reload()
+      })
+      navigator.serviceWorker.addEventListener('message', e => {
+        console.log('receive message, here is browser. message is ', e.data)
       })
     })
 } else {
@@ -65,6 +64,12 @@ $('.add').onclick = () => {
   let script = document.createElement('script')
   document.body.appendChild(script)
   script.src = 'http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'
+}
+
+$('.send').onclick = () => {
+  if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+    navigator.serviceWorker.controller.postMessage('send message from browser')
+  }
 }
 
 function $ (selector) {

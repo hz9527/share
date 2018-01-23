@@ -34,6 +34,9 @@ if ('serviceWorker' in navigator) {
         console.log('broswer receive controllerchange event')
         location.reload()
       })
+      navigator.serviceWorker.addEventListener('message', e => {
+        console.log('receive message, here is browser. message is ', e.data)
+      })
     })
 } else {
   console.log('this browser not support serviceWorker', 'error')
@@ -61,6 +64,12 @@ $('.add').onclick = () => {
   let script = document.createElement('script')
   document.body.appendChild(script)
   script.src = 'http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'
+}
+
+$('.send').onclick = () => {
+  if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+    navigator.serviceWorker.controller.postMessage('send message from browser')
+  }
 }
 
 function $ (selector) {

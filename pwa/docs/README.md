@@ -2,9 +2,6 @@
 1. [什么是serviceWorker](https://developer.mozilla.org/zh-CN/docs/Web/API/ServiceWorker)
   * 如何注册？
   * 生命周期？
-2. serviceWorker之install
-  * 可以缓存哪些？
-  * 有什么坑点？
 
 ### 操作指南
 ```sh
@@ -22,3 +19,6 @@ sw大致原理
 1. install时将指定文件添加至缓存，所以第一次打开应用fetch来自server
 2. activate时将不需要的缓存删除，示例是删除非指定文件列表
 3. fetch拦截get请求，不存在则请求并缓存
+
+注意对比
+1. skipWaiting更新后不激活

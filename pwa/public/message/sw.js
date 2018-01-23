@@ -90,3 +90,12 @@ self.addEventListener('fetch', event => {
     )
   }
 })
+
+self.addEventListener('message', event => {
+  console.log('receive message, here is sw. message is', event.data)
+  clients.matchAll().then(clients => {
+    clients.forEach(client => {
+      client.postMessage('send mseeage from serviceWorker')
+    })
+  })
+})

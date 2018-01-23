@@ -23,7 +23,7 @@ console.log = (function () {
   }
 })()
 
-console.log('update serviceWorker 2 times', 'tip')
+console.log('update serviceWorker 1 times', 'tip')
 
 const CacheName = 'test'
 const CacheList = ['./index.js', './index.html'] // install can`t add cross-domain file
@@ -50,7 +50,6 @@ self.addEventListener('install', event => {
 
 self.addEventListener('activate', event => {
   console.log('emit activate event')
-  clients.claim()
   event.waitUntil(
     caches.open(CacheName)
       .then(cache => {
@@ -65,6 +64,7 @@ self.addEventListener('activate', event => {
         })
         .then(() => {
           console.log('clear unnecessary cache', 'success')
+          clients.claim()
         })
       })
   )
@@ -89,4 +89,13 @@ self.addEventListener('fetch', event => {
         })
     )
   }
+})
+
+self.addEventListener('message', event => {
+  console.log('receive message, here is sw. message is', event.data)
+  clients.matchAll().then(clients => {
+    clients.forEach(client => {
+      client.postMessage('send mseeage from serviceWorker')
+    })
+  })
 })
